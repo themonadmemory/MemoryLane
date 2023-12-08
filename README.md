@@ -4,7 +4,7 @@ Hey there,
 
 Welcome to Memory Lane, a space where we're weaving stories together, not just for ourselves but for everyone.
 
-I know there's a chance this might catch some attention, and maybe down the line, it could morph into something beyond us. But I'm really hoping you jump in and be a part of what we're calling "The Memoirs Platform."
+I know there's a chance this might catch some attention, and maybe down the line, it could morph into something beyond us. But I'm really hoping you jump in and be a part of what we're calling "Memory Lane"
 
 Here's the scoop: I want to create a spot where anyone, without jumping through hoops, can jot down their memories. You get to pick a day – any day – from the past or even the future. Imagine, a collection of memories from people you've never met. It's not just a cool idea; it's a way to bring a different kind of poetry back into our lives.
 
