@@ -3,6 +3,16 @@ const memories = [];
 
 module.exports = async (req, res) => {
   if (req.method === 'POST') {
+    // handle POST logic
+  } else if (req.method === 'GET') {
+    // handle GET logic
+  } else {
+    res.status(405).end();
+  }
+};
+
+module.exports = async (req, res) => {
+  if (req.method === 'POST') {
     const { date, memory } = req.body;
 
     if (!date || !memory) {
