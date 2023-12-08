@@ -13,36 +13,48 @@
         <!-- Your existing HTML content here -->
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js"></script>
-
     <script>
-        const firebaseConfig = {
-            apiKey: 'AIzaSyCubVb10P2yNg-tgDNftO0i7N-K20NOojE',
-            authDomain: 'memory-lane-1f969.firebaseapp.com',
-            projectId: 'memory-lane-1f969',
-            storageBucket: 'memory-lane-1f969.appspot.com',
-            messagingSenderId: '1086158489604',
-            appId: '1:1086158489604:web:072a075fd8afd748828d51'
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        const db = firebase.firestore();
-
         document.addEventListener('DOMContentLoaded', function () {
             const displayArea = document.getElementById('display-area');
             const memoryForm = document.getElementById('memory-form');
 
-            const saveMemoryToFirestore = memory => db.collection('memories').add(memory);
-            const displayMemory = memory => {
+            function saveMemoryToGitHub(memory) {
+                const issueTitle = `Memory shared on ${memory.date}`;
+                const issueBody = `Someone shared: "${memory.text}"`;
+
+                fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/issues', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer YOUR_GITHUB_TOKEN',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title: issueTitle, body: issueBody }),
+                })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.error('Error saving memory:', error));
+            }
+
+            function displayMemory(memory) {
                 const newMemoryElement = document.createElement('p');
                 newMemoryElement.textContent = `On ${memory.date}, someone shared: "${memory.text}"`;
                 displayArea.appendChild(newMemoryElement);
-            };
+            }
 
-            db.collection('memories').get()
-                .then(querySnapshot => querySnapshot.forEach(doc => displayMemory(doc.data())));
+            // Load memories from GitHub Issues on page load
+            fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/issues')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(issue => {
+                        const memory = {
+                            date: new Date(issue.title.replace('Memory shared on ', '')).toLocaleDateString(),
+                            text: issue.body.replace('Someone shared: "', '').replace('"', '')
+                        };
+                        displayMemory(memory);
+                    });
+                });
 
+            // Handle memory form submission
             memoryForm.addEventListener('submit', function (event) {
                 event.preventDefault();
                 const memoryText = document.getElementById('memory-text').value;
@@ -50,9 +62,13 @@
 
                 const newMemory = { text: memoryText, date: memoryDate };
 
-                saveMemoryToFirestore(newMemory);
+                // Save memory to GitHub Issues
+                saveMemoryToGitHub(newMemory);
+
+                // Display the new memory
                 displayMemory(newMemory);
 
+                // Clear the form
                 memoryForm.reset();
             });
         });
