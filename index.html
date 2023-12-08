@@ -71,10 +71,26 @@
             const displayArea = document.getElementById('display-area');
             const memoryForm = document.getElementById('memory-form');
 
-            function saveMemoryToLocalStorage(memory) {
-                const savedMemories = JSON.parse(localStorage.getItem('memories')) || [];
-                savedMemories.push(memory);
-                localStorage.setItem('memories', JSON.stringify(savedMemories));
+            function saveMemoryToGist(memory) {
+                const gistData = {
+                    description: 'Memory Lane Memories',
+                    files: {
+                        'memories.json': {
+                            content: JSON.stringify([memory])
+                        }
+                    }
+                };
+
+                fetch('https://api.github.com/gists/gist:aa29af8c9a56091dea4f942cf9dd268c', {
+                    method: 'PATCH',
+                    body: JSON.stringify(gistData),
+                    headers: {
+                        'Authorization': 'Bearer https://github.com/themonadmemory',
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => console.log(data));
             }
 
             function displayMemory(memory) {
@@ -83,9 +99,13 @@
                 displayArea.appendChild(newMemoryElement);
             }
 
-            // Load memories from local storage on page load
-            const savedMemories = JSON.parse(localStorage.getItem('memories')) || [];
-            savedMemories.forEach(memory => displayMemory(memory));
+            // Load memories from GitHub Gists on page load
+            fetch('https://api.github.com/gists/YOUR_GIST_ID')
+                .then(response => response.json())
+                .then(data => {
+                    const savedMemories = JSON.parse(data.files['memories.json'].content) || [];
+                    savedMemories.forEach(memory => displayMemory(memory));
+                });
 
             // Handle memory form submission
             memoryForm.addEventListener('submit', function (event) {
@@ -95,8 +115,8 @@
 
                 const newMemory = { text: memoryText, date: memoryDate };
 
-                // Save memory to local storage
-                saveMemoryToLocalStorage(newMemory);
+                // Save memory to GitHub Gists
+                saveMemoryToGist(newMemory);
 
                 // Display the new memory
                 displayMemory(newMemory);
