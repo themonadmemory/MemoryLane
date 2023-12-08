@@ -5,92 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Lane</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            text-align: center;
-            margin: 50px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-        a {
-            color: #007BFF;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        textarea {
-            width: 100%;
-            height: 100px;
-            margin-bottom: 10px;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        input[type="date"], input[type="submit"] {
-            margin: 10px 0;
-            padding: 5px;
-            border-radius: 5px;
-        }
-        #display-area {
-            text-align: left;
-        }
+        /* Your CSS styles here */
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to Memory Lane</h1>
-        <p>Share your story, pick a moment, and be part of our collective journey.</p>
-
-        <h2 id="write">Write Your Memory</h2>
-        <form id="memory-form">
-            <textarea id="memory-text" placeholder="Share your memory (max 240 characters)" maxlength="240" required></textarea>
-            <br>
-            <label for="memory-date">Choose a Date:</label>
-            <input type="date" id="memory-date" required>
-            <br>
-            <input type="submit" value="Save Memory">
-        </form>
-
-        <h2>Memories Shared</h2>
-        <div id="display-area"></div>
+        <!-- Your existing HTML content here -->
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-firestore.js"></script>
+
     <script>
+        // Initialize Firebase with your project configuration
+        const firebaseConfig = {
+            apiKey: 'AIzaSyCubVb10P2yNg-tgDNftO0i7N-K20NOojE',
+            authDomain: 'memory-lane-1f969.firebaseapp.com',
+            projectId: 'memory-lane-1f969',
+            storageBucket: 'memory-lane-1f969.appspot.com',
+            messagingSenderId: '1086158489604"',
+            appId: '1:1086158489604:web:072a075fd8afd748828d51'
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the Firestore database
+        const db = firebase.firestore();
+
         document.addEventListener('DOMContentLoaded', function () {
             const displayArea = document.getElementById('display-area');
             const memoryForm = document.getElementById('memory-form');
 
-            function saveMemoryToGist(memory) {
-                const gistData = {
-                    description: 'Memory Lane Memories',
-                    files: {
-                        'memories.json': {
-                            content: JSON.stringify([memory])
-                        }
-                    }
-                };
-
-                fetch('https://api.github.com/gists/gist:aa29af8c9a56091dea4f942cf9dd268c', {
-                    method: 'PATCH',
-                    body: JSON.stringify(gistData),
-                    headers: {
-                        'Authorization': 'Bearer https://github.com/themonadmemory',
-                        'Content-Type': 'application/json',
-                    },
-                })
-                    .then(response => response.json())
-                    .then(data => console.log(data));
+            function saveMemoryToFirestore(memory) {
+                db.collection('memories').add(memory)
+                    .then(() => console.log('Memory added to Firestore'))
+                    .catch(error => console.error('Error adding memory:', error));
             }
 
             function displayMemory(memory) {
@@ -99,12 +47,13 @@
                 displayArea.appendChild(newMemoryElement);
             }
 
-            // Load memories from GitHub Gists on page load
-            fetch('https://api.github.com/gists/https://gist.github.com/themonadmemory/aa29af8c9a56091dea4f942cf9dd268c')
-                .then(response => response.json())
-                .then(data => {
-                    const savedMemories = JSON.parse(data.files['memories.json'].content) || [];
-                    savedMemories.forEach(memory => displayMemory(memory));
+            // Load memories from Firestore on page load
+            db.collection('memories').get()
+                .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        const memory = doc.data();
+                        displayMemory(memory);
+                    });
                 });
 
             // Handle memory form submission
@@ -115,14 +64,23 @@
 
                 const newMemory = { text: memoryText, date: memoryDate };
 
-                // Save memory to GitHub Gists
-                saveMemoryToGist(newMemory);
+                // Save memory to Firestore
+                saveMemoryToFirestore(newMemory);
 
                 // Display the new memory
                 displayMemory(newMemory);
 
                 // Clear the form
                 memoryForm.reset();
+
+                var admin = require("firebase-admin");
+
+var serviceAccount = require("path/to/serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
             });
         });
     </script>
