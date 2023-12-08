@@ -100,7 +100,7 @@
             }
 
             // Load memories from GitHub Gists on page load
-            fetch('https://api.github.com/gists/YOUR_GIST_ID')
+            fetch('https://api.github.com/gists/https://gist.github.com/themonadmemory/aa29af8c9a56091dea4f942cf9dd268c')
                 .then(response => response.json())
                 .then(data => {
                     const savedMemories = JSON.parse(data.files['memories.json'].content) || [];
