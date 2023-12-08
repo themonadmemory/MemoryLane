@@ -54,7 +54,7 @@
 
         <h2 id="write">Write Your Memory</h2>
         <form id="memory-form">
-            <textarea placeholder="Share your memory (max 240 characters)" maxlength="240" required></textarea>
+            <textarea id="memory-text" placeholder="Share your memory (max 240 characters)" maxlength="240" required></textarea>
             <br>
             <label for="memory-date">Choose a Date:</label>
             <input type="date" id="memory-date" required>
@@ -68,34 +68,41 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const displayArea = document.getElementById('display-area');
+            const memoryForm = document.getElementById('memory-form');
+
+            function saveMemoryToLocalStorage(memory) {
+                const savedMemories = JSON.parse(localStorage.getItem('memories')) || [];
+                savedMemories.push(memory);
+                localStorage.setItem('memories', JSON.stringify(savedMemories));
+            }
+
+            function displayMemory(memory) {
+                const newMemoryElement = document.createElement('p');
+                newMemoryElement.textContent = `On ${memory.date}, someone shared: "${memory.text}"`;
+                displayArea.appendChild(newMemoryElement);
+            }
+
             // Load memories from local storage on page load
             const savedMemories = JSON.parse(localStorage.getItem('memories')) || [];
-            const displayArea = document.getElementById('display-area');
+            savedMemories.forEach(memory => displayMemory(memory));
 
-            savedMemories.forEach(memory => {
-                const newMemory = document.createElement('p');
-                newMemory.textContent = `On ${memory.date}, someone shared: "${memory.text}"`;
-                displayArea.appendChild(newMemory);
-            });
-
-            document.getElementById('memory-form').addEventListener('submit', function (event) {
+            // Handle memory form submission
+            memoryForm.addEventListener('submit', function (event) {
                 event.preventDefault();
-                const memoryText = document.querySelector('textarea').value;
+                const memoryText = document.getElementById('memory-text').value;
                 const memoryDate = document.getElementById('memory-date').value;
 
-                // Save memory to local storage
                 const newMemory = { text: memoryText, date: memoryDate };
-                savedMemories.push(newMemory);
-                localStorage.setItem('memories', JSON.stringify(savedMemories));
+
+                // Save memory to local storage
+                saveMemoryToLocalStorage(newMemory);
 
                 // Display the new memory
-                const newMemoryElement = document.createElement('p');
-                newMemoryElement.textContent = `On ${newMemory.date}, someone shared: "${newMemory.text}"`;
-                displayArea.appendChild(newMemoryElement);
+                displayMemory(newMemory);
 
                 // Clear the form
-                document.querySelector('textarea').value = '';
-                document.getElementById('memory-date').value = '';
+                memoryForm.reset();
             });
         });
     </script>
