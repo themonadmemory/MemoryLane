@@ -2,93 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collective Memories</title>
+    <title>Memory Lane</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
             text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
+            margin: 50px;
         }
-
-        header, main, footer {
-            max-width: 800px;
-            margin: 0 auto;
+        .container {
+            max-width: 600px;
+            margin: auto;
             padding: 20px;
             background-color: #fff;
+            border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-            border-radius: 8px;
         }
-
         h1, h2 {
             color: #333;
         }
-
-        form {
-            text-align: left;
+        p {
+            color: #666;
         }
-
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            color: #555;
+        a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
         }
-
-        input, textarea {
+        textarea {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
         }
-
-        input[type="submit"] {
-            background-color: #4caf50;
-            color: #fff;
-            cursor: hand;
-            transition: background-color 0.3s;
+        input[type="date"], input[type="submit"] {
+            margin: 10px 0;
+            padding: 5px;
+            border-radius: 5px;
         }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
+        #display-area {
+            text-align: left;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Welcome to Memory Lane</h1>
+        <p>Share your story, pick a moment, and be part of our collective journey.</p>
 
-    <header>
-        <h1>Collective Memories</h1>
-    </header>
+        <h2 id="write">Write Your Memory</h2>
+        <form id="memory-form">
+            <textarea placeholder="Share your memory (max 240 characters)" maxlength="240" required></textarea>
+            <br>
+            <label for="memory-date">Choose a Date:</label>
+            <input type="date" id="memory-date" required>
+            <br>
+            <input type="submit" value="Save Memory">
+        </form>
 
-    <main>
-        <section>
-            <h2>Share Your Memory</h2>
-            <form action="/api/process" method="post">
-                <label for="date">Select a Date:</label>
-                <input type="date" id="date" name="date" required>
+        <h2>Memories Shared</h2>
+        <div id="display-area"></div>
+    </div>
 
-                <label for="memory">Your Memory:</label>
-                <textarea id="memory" name="memory" rows="4" required></textarea>
+    <script>
+        document.getElementById('memory-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const memoryText = document.querySelector('textarea').value;
+            const memoryDate = document.getElementById('memory-date').value;
+            const displayArea = document.getElementById('display-area');
+            
+            // Display the memory in the display area
+            const newMemory = document.createElement('p');
+            newMemory.textContent = `On ${memoryDate}, someone shared: "${memoryText}"`;
+            displayArea.appendChild(newMemory);
 
-                <input type="submit" value="Share">
-            </form>
-        </section>
+            // You can add further functionality like saving to a database here
 
-        <section>
-            <h2>Shared Memories</h2>
-            <!-- List of memories shared from the database -->
-        </section>
-    </main>
-
-    <footer>
-        <!-- No copyright information in this example -->
-    </footer>
-
+            // Clear the form
+            document.querySelector('textarea').value = '';
+            document.getElementById('memory-date').value = '';
+        });
+    </script>
 </body>
 </html>
