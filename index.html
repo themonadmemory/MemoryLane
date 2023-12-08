@@ -67,22 +67,36 @@
     </div>
 
     <script>
-        document.getElementById('memory-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const memoryText = document.querySelector('textarea').value;
-            const memoryDate = document.getElementById('memory-date').value;
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load memories from local storage on page load
+            const savedMemories = JSON.parse(localStorage.getItem('memories')) || [];
             const displayArea = document.getElementById('display-area');
-            
-            // Display the memory in the display area
-            const newMemory = document.createElement('p');
-            newMemory.textContent = `On ${memoryDate}, someone shared: "${memoryText}"`;
-            displayArea.appendChild(newMemory);
 
-            // You can add further functionality like saving to a database here
+            savedMemories.forEach(memory => {
+                const newMemory = document.createElement('p');
+                newMemory.textContent = `On ${memory.date}, someone shared: "${memory.text}"`;
+                displayArea.appendChild(newMemory);
+            });
 
-            // Clear the form
-            document.querySelector('textarea').value = '';
-            document.getElementById('memory-date').value = '';
+            document.getElementById('memory-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const memoryText = document.querySelector('textarea').value;
+                const memoryDate = document.getElementById('memory-date').value;
+
+                // Save memory to local storage
+                const newMemory = { text: memoryText, date: memoryDate };
+                savedMemories.push(newMemory);
+                localStorage.setItem('memories', JSON.stringify(savedMemories));
+
+                // Display the new memory
+                const newMemoryElement = document.createElement('p');
+                newMemoryElement.textContent = `On ${newMemory.date}, someone shared: "${newMemory.text}"`;
+                displayArea.appendChild(newMemoryElement);
+
+                // Clear the form
+                document.querySelector('textarea').value = '';
+                document.getElementById('memory-date').value = '';
+            });
         });
     </script>
 </body>
