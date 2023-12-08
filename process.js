@@ -3,9 +3,13 @@ const memories = [];
 
 module.exports = async (req, res) => {
   if (req.method === 'POST') {
-    const { date, memory } = req.body; // Assuming you're using JSON in the request body
+    const { date, memory } = req.body;
 
-    // Store the memory in the array (you might want to use a database in a real-world scenario)
+    if (!date || !memory) {
+      return res.status(400).json({ error: 'Date and memory are required' });
+    }
+
+    // Store the memory in the array (in-memory storage, not persisted)
     memories.push({ date, memory });
 
     // Send a response (adjust as needed)
