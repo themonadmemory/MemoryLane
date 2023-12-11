@@ -48,60 +48,31 @@
         <p>Share your story, pick a moment, and be part of our collective journey.</p>
 
         <h2 id="write">Write Your Memory</h2>
-        <!-- Update the form's action attribute to the Formspree endpoint with the recipient email -->
-        <form id="memory-form" action="https://formspree.io/f/ludovic.coutinho@proton.me" method="POST">
-            <textarea id="memory-text" name="memory_text" placeholder="Share your memory (max 240 characters)" maxlength="240" required></textarea>
-            <br>
-            <label for="memory-date">Choose a Date:</label>
-            <input type="date" id="memory-date" name="memory_date" required>
-            <br>
-            <input type="submit" value="Save Memory">
-        </form>
+        <textarea id="memory-text" placeholder="Share your memory (max 240 characters)" maxlength="240" required></textarea>
+        <br>
+        <label for="memory-date">Choose a Date:</label>
+        <input type="date" id="memory-date" required>
+        <br>
+        <button onclick="saveMemory()">Save Memory</button>
 
         <h2>Memories Shared</h2>
         <div id="display-area"></div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const displayArea = document.getElementById('display-area');
-            const memoryForm = document.getElementById('memory-form');
+        function saveMemory() {
+            const memoryText = document.getElementById('memory-text').value;
+            const memoryDate = document.getElementById('memory-date').value;
 
-            function displayMemory(memory) {
-                const newMemoryElement = document.createElement('p');
-                newMemoryElement.textContent = `On ${memory.date}, someone shared: "${memory.text}"`;
-                displayArea.appendChild(newMemoryElement);
-            }
+            const newMemoryElement = document.createElement('p');
+            newMemoryElement.textContent = `On ${memoryDate}, someone shared: "${memoryText}"`;
 
-            // Handle memory form submission with AJAX
-            memoryForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-                const memoryText = document.getElementById('memory-text').value;
-                const memoryDate = document.getElementById('memory-date').value;
+            document.getElementById('display-area').appendChild(newMemoryElement);
 
-                // Create a FormData object to send the form data
-                const formData = new FormData(memoryForm);
-
-                // Send the form data to Formspree using AJAX
-                fetch('https://formspree.io/f/ludovic.coutinho@proton.me', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Display the new memory
-                    const newMemory = { text: memoryText, date: memoryDate };
-                    displayMemory(newMemory);
-
-                    // Clear the form
-                    memoryForm.reset();
-                })
-                .catch(error => console.error('Error submitting form:', error));
-            });
-        });
+            // Clear the form
+            document.getElementById('memory-text').value = '';
+            document.getElementById('memory-date').value = '';
+        }
     </script>
 </body>
 </html>
