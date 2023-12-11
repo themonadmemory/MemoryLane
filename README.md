@@ -1,5 +1,7 @@
 Welcome to Memory Lane
 
+https://twitter.com/MemoryLane2024
+
 Hey there,
 
 Welcome to Memory Lane, a space where we're weaving stories together, not just for ourselves but for everyone.
@@ -16,4 +18,4 @@ Let's make memories.
 
 The Monad
 
-@Crash_113589311
+https://twitter.com/Crash_113589311
