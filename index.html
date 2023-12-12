@@ -3,81 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Lane</title>
-
-    <link rel="icon" href="https://i.ibb.co/ry8T8z4/0j-SYz-H79-400x400.jpg" type="image/x-icon">
+    <title>Forever Friends</title>
     
+    <!-- Ajouter une balise link pour l'icône de l'onglet -->
+     <link rel="icon" href="https://i.ibb.co/ry8T8z4/0j-SYz-H79-400x400.jpg" type="image/x-icon">
+
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
             text-align: center;
             margin: 50px;
-            background-color: #000000; /* Couleur noire comme dans Matrix */
-            color: #00ff00; /* Couleur verte comme dans Matrix */
+            background-color: #f5f5f5;
+            color: #333;
         }
 
         h1, h2 {
-            color: #00ff00; /* Couleur verte comme dans Matrix */
+            color: #333;
         }
 
         p {
-            color: #00ff00; /* Couleur verte comme dans Matrix */
+            color: #666;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Pour éviter le débordement des ombres */
+        }
+
+        .left-column, .right-column {
+            padding: 20px;
         }
 
         textarea {
-            width: 100%;
+            width: calc(100% - 20px);
             height: 100px;
             margin-bottom: 10px;
-            padding: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
             border-radius: 5px;
+            resize: none;
         }
 
         input[type="date"], input[type="submit"] {
+            width: calc(100% - 20px);
             margin: 10px 0;
-            padding: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
             border-radius: 5px;
+            background-color: #4CAF50; /* Couleur verte pour le bouton soumettre */
+            color: #fff;
+            cursor: pointer;
         }
 
         ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
 
         li {
             margin: 10px 0;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
         }
 
-   
-        
+        /* Ajout de styles pour les écrans étroits (mobiles) */
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0; /* Coins carrés sur les écrans étroits */
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to Memory Lane</h1>
-        <p>Share your story, pick a moment, and be part of our collective journey.</p>
+        <div class="left-column">
+            <h1>Forever Friends</h1>
+            <p>Share a last message to our furry friends.</p>
+            <img src="https://i.ibb.co/G2rh1bB/IMG-6332.jpg" alt="Forever Friends S Image" style="width: 100%; border-radius: 10px; margin-bottom: 20px;">
+        </div>
+        <div class="right-column">
+            <h2 id="write">Write Your Message</h2>
+            <textarea id="memory-text" placeholder="Share your memory (max 240 characters)" maxlength="240" required></textarea>
+            <br>
+            <label for="memory-date">Choose a Date:</label>
+            <input type="date" id="memory-date" required>
+            <br>
+            <input type="submit" value="Save Message" onclick="saveMemory()">
 
-        <h2 id="write">Write Your Memory</h2>
-        <textarea id="memory-text" placeholder="Share your memory (max 240 characters)" maxlength="240" required></textarea>
-        <br>
-        <label for="memory-date">Choose a Date:</label>
-        <input type="date" id="memory-date" required>
-        <br>
-        <button onclick="saveMemory()">Save Memory</button>
-
-        <h2>Memories Shared</h2>
-        <ul id="display-area">
-            <!-- Ajoutez manuellement des éléments li ici si nécessaire -->
-            <li>Please be patient, each memory is being added manually at the moment.</li>
-            <li>   --- ¿ ---   </li>
-            <li>On 2023-12-05, someone shared: "That Birthday was perfect"</li>
-            <li>On 2023-12-10, someone shared: "Daddy daughter date night. Went and saw the boy and the heron. I miss them all the time. All I ever wanted was my family back. But the Heron showed me sometimes all is, as it should be. All there is to do, is let go...and keep going"</li>
-            <li>On 2002-08-27, someone shared: "Goodbye Mom. I'm still working on making you proud. Like I promised. I promise."</li>
-            <li>On 2007-12-31, someone shared: "I'll never forget that cornmaze.Or the way you used to look at me."</li>
-            <li>On 2011-06-11, someone shared: "Why did you give up on our family? I'm sorry for my part in things...a family of my own is all I ever wanted. I'll always love you."</li>
-
-
-            
-        </ul>
+            <h2>Messages Shared</h2>
+            <ul id="display-area">
+                <li>Please be patient, each message is being added manually.</li>
+                <li>---</li>
+                <li>--- TO OUR BELOVED ---</li>
+                <li>---</li>
+                <li>On 2023-12-12, someone shared: "I'm dying inside. My Black Cat 'S' is gone."</li>
+            </ul>
+        </div>
     </div>
 
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
@@ -89,7 +115,7 @@
             const memoryDate = document.getElementById('memory-date').value;
 
             // Envoyer le mémoire par e-mail
-            emailjs.send("service_f48v2un", "template_0gv99el", {
+            emailjs.send("service_f48v2un", "template_dayc6cu", {
                 text: memoryText,
                 date: memoryDate
             }).then(response => {
@@ -109,11 +135,8 @@
         }
     </script>
 
-<!-- Ajoutez ces lignes à la fin de la balise <body> -->
-<div style="text-align: center; margin-top: 30px; font-weight: bold;">
-    <a href="README.md" target="_blank">Read the README</a>
-</div>
-
-    
+    <div style="text-align: center; margin-top: 30px; font-weight: bold;">
+        <a href="README.md" target="_blank">Read the README</a>
+    </div>
 </body>
 </html>
