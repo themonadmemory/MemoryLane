@@ -8,47 +8,110 @@
         body {
             font-family: 'Courier New', Courier, monospace;
             text-align: center;
-            margin: 50px;
-            background-color: #000000; /* Couleur noire comme dans Matrix */
-            color: #00ff00; /* Couleur verte  */
+            margin: 0;
+            padding: 0;
+            background-color: #000000; /* Black background color */
+            color: #00ff00; /* Green color */
+            overflow: hidden;
         }
 
         h1, h2 {
-            color: #00ff00; /* Couleur verte  */
+            color: #00ff00; /* Green color */
         }
 
         p {
-            color: #00ff00; /* Couleur verte  */
+            color: #00ff00; /* Green color */
         }
 
         textarea {
-            width: 100%;
-            height: 100px;
-            margin-bottom: 10px;
-            padding: 5px;
+            width: 80%;
+            margin: 20px auto;
+            padding: 10px;
+            border: 2px solid #00ff00; /* Green border */
             border-radius: 5px;
+            background-color: #000000; /* Black background color */
+            color: #00ff00; /* Green color */
         }
 
         input[type="date"], input[type="submit"] {
             margin: 10px 0;
-            padding: 5px;
+            padding: 10px;
+            border: 2px solid #00ff00; /* Green border */
             border-radius: 5px;
+            background-color: #000000; /* Black background color */
+            color: #00ff00; /* Green color */
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #00ff00; /* Green color */
+            color: #000000; /* Black background color */
+            cursor: pointer;
         }
 
         ul {
             list-style-type: none;
             padding: 0;
+            margin: 20px auto;
         }
 
         li {
             margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #00ff00; /* Green border */
+            border-radius: 5px;
+            background-color: #000000; /* Black background color */
+            color: #00ff00; /* Green color */
         }
 
-   
-        
+        a {
+            color: #00ff00; /* Green color */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Matrix-like digital rain effect */
+        .matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .code {
+            position: absolute;
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ff00; /* Green color */
+            opacity: 0.7;
+            white-space: nowrap;
+            animation: animateCode 10s linear infinite;
+        }
+
+        @keyframes animateCode {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-100%);
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Matrix-like digital rain effect -->
+    <div class="matrix">
+        <div class="code">
+            01010101011011000110110101100101011001000010000001110111011001010111001001110100
+        </div>
+    </div>
+
     <div class="container">
         <h1>Welcome to Memory Lane</h1>
         <p>Share your story, pick a moment, and be part of our collective journey.</p>
@@ -63,17 +126,14 @@
 
         <h2>Memories Shared</h2>
         <ul id="display-area">
-            <!-- Ajoutez manuellement des éléments li ici si nécessaire -->
+            <!-- Manually add li elements here if necessary -->
             <li>Please be patient, each memory is being added manually at the moment.</li>
             <li>   --- ¿ ---   </li>
             <li>On 2023-12-05, someone shared: "That Birthday was perfect"</li>
             <li>On 2023-12-10, someone shared: "Daddy daughter date night. Went and saw the boy and the heron. I miss them all the time. All I ever wanted was my family back. But the Heron showed me sometimes all is, as it should be. All there is to do, is let go...and keep going"</li>
             <li>On 2002-08-27, someone shared: "Goodbye Mom. I'm still working on making you proud. Like I promised. I promise."</li>
-            <li>On 2007-12-31, someone shared: "I'll never forget that cornmaze.Or the way you used to look at me."</li>
+            <li>On 2007-12-31, someone shared: "I'll never forget that cornmaze. Or the way you used to look at me."</li>
             <li>On 2011-06-11, someone shared: "Why did you give up on our family? I'm sorry for my part in things...a family of my own is all I ever wanted. I'll always love you."</li>
-
-
-            
         </ul>
     </div>
 
@@ -106,11 +166,9 @@
         }
     </script>
 
-<!-- Ajoutez ces lignes à la fin de la balise <body> -->
-<div style="text-align: center; margin-top: 30px; font-weight: bold;">
-    <a href="README.md" target="_blank">Read the README</a>
-</div>
-
-    
+    <!-- Add these lines at the end of the <body> tag -->
+    <div style="text-align: center; margin-top: 30px; font-weight: bold;">
+        <a href="README.md" target="_blank">Read the README</a>
+    </div>
 </body>
 </html>
