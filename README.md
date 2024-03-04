@@ -18,4 +18,3 @@ Let's make memories.
 
 The Monad
 
-[Twitter: @Crash_113589311](https://twitter.com/Crash_113589311)
